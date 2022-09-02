@@ -3,32 +3,39 @@ import { initializeApp } from 'firebase/app'
 import { getFirestore, collection, onSnapshot } from 'firebase/firestore'
 import { config } from '../config'
 import { useEffect, useState } from 'react'
+import { Post } from '../dataTypes/PostType'
 
 const firebaseApp = initializeApp(config.firebase)
 const firestore = getFirestore(firebaseApp)
 const postsCol = collection(firestore, 'posts')
 
+let D: Post[] = []
+
 const Home: NextPage = () => {
-  const [posts, setPosts] = useState<{
-    id: string,
-    title: string,
-    subTitle: string,
-    content: string,
-    userId: string
-  }[]>([])
+  const [posts, setPosts] = useState<Post[]>([])
   useEffect(() => {
 
     onSnapshot(postsCol, snapShot => {
-      let d = []
+      D = []
       snapShot.forEach((doc) => {
-        d.push(doc.data())
+        D.push(doc.data())
       })
-      console.log(d)
+      D.map(data => console.log(data.content))
+      setPosts(D)
+      console.log(D)
     })
   }, [firestore])
 
   return (
-    <div className="text-blue-500 text-3xl">Hello world</div>
+    <div className="h-screen bg-gray-100">
+      <div className="container mx-auto">
+        {
+          D.map(data => (
+            <p className='text-gray-800 text-2xl'>{data.title}</p>
+          ))
+        }
+      </div>
+    </div>
   )
 }
 
