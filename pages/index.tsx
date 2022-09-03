@@ -13,27 +13,23 @@ let D: Post[] = []
 
 const Home: NextPage = () => {
   const [posts, setPosts] = useState<Post[]>([])
-  useEffect(() => {
+  /*useEffect(() => {
 
-    onSnapshot(postsCol, snapShot => {
-      D = []
-      snapShot.forEach((doc) => {
-        D.push(doc.data())
-      })
-      D.map(data => console.log(data.content))
-      setPosts(D)
-      console.log(D)
+  onSnapshot(postsCol, snapShot => {
+    D = []
+    snapShot.forEach((doc) => {
+      D.push(doc.data())
     })
-  }, [firestore])
+    D.map(data => console.log(data.content))
+    setPosts(D)
+    console.log(D)
+  })
+}, [firestore])*/
 
   return (
     <div className="h-screen bg-gray-100">
       <div className="container mx-auto">
-        {
-          D.map(data => (
-            <p className='text-gray-800 text-2xl'>{data.title}</p>
-          ))
-        }
+        Hello world
       </div>
     </div>
   )
