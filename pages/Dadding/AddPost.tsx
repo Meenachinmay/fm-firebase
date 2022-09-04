@@ -54,11 +54,14 @@ const AddPost: NextPage = () => {
         <div onClick={handleAddData} className='bg-teal-500 p-3 text-white cursor-pointer w-28 text-center hover:bg-teal-600'>Add data</div>
       </div>
       <div className='mt-12 border border-1 border-teal-500 p-5 w-1/2 overflow-y-scroll' style={{ maxHeight: "400px" }}>
-        <ul className='space-y-2'>
-          {posts.map((data) => (
-            <SinglePost key={data.id} id={data.id} title={data.title} subTitle={data.subTitle} content={data.content} userId={data.userId} />
-          ))}
-        </ul>
+        {
+          fetching ? <p className='flex flex-col justify-center items-center text-center text-teal-500 text-2xl uppercase'>Loading...</p> :
+            <ul className='space-y-2'>
+              {posts.map((data) => (
+                <SinglePost key={data.id} id={data.id} title={data.title} subTitle={data.subTitle} content={data.content} userId={data.userId} />
+              ))}
+            </ul>
+        }
       </div>
     </div >
   )
