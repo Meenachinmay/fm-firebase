@@ -5,14 +5,19 @@ import { doc, getFirestore, collection, onSnapshot, setDoc } from 'firebase/fire
 import { config } from '../../config'
 import { Post } from '../../dataTypes/PostType'
 import SinglePost from '../../components/SinglePost'
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { useRouter } from 'next/router'
 
 const firebaseApp = initializeApp(config.firebase)
+const auth = getAuth(firebaseApp)
 const firestore = getFirestore(firebaseApp)
 const postsCol = collection(firestore, 'posts')
 
 let D: Post[] = []
 
 const AddPost: NextPage = () => {
+
+  const router = useRouter()
 
   const [id, setId] = useState('')
   const [title, setTitle] = useState('')
@@ -30,6 +35,9 @@ const AddPost: NextPage = () => {
   }
 
   useEffect(() => {
+    if (!auth.currentUser) {
+      router.push(`/auth/login`)
+    }
     setFetching(true)
     onSnapshot(postsCol, snapShot => {
       D = []

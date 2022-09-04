@@ -42,8 +42,6 @@ const Register: NextPage = () => {
     onAuthStateChanged(auth, user => {
       if (user) {
         router.push(`/`)
-      } else {
-        router.push(`/auth/login`)
       }
     })
   }, [])

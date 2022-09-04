@@ -2,16 +2,21 @@ import type { NextPage } from 'next'
 import { initializeApp } from 'firebase/app'
 import { getFirestore, collection, onSnapshot } from 'firebase/firestore'
 import { config } from '../../config'
-import { useState } from 'react'
+import { getAuth } from 'firebase/auth'
+
+import { useEffect, useState } from 'react'
 import { Post } from '../../dataTypes/PostType'
+import { useRouter } from 'next/router'
 
 const firebaseApp = initializeApp(config.firebase)
+const auth = getAuth(firebaseApp)
 const firestore = getFirestore(firebaseApp)
 const postsCol = collection(firestore, 'posts')
 
 let D: Post[] = []
 
 const LoadPost: NextPage = () => {
+  const router = useRouter()
 
   const [posts, setPosts] = useState<Post[]>([])
   const [fetching, setFetching] = useState(false)
@@ -27,6 +32,12 @@ const LoadPost: NextPage = () => {
       setFetching(false)
     })
   }
+
+  useEffect(() => {
+    if (!auth.currentUser) {
+      router.push(`/auth/login`)
+    }
+  }, [])
 
   if (fetching) {
     return (
